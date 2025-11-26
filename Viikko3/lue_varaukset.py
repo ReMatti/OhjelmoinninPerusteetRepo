@@ -18,80 +18,87 @@ Sähköposti: anna.virtanen@example.com
 """
 from datetime import datetime
 
-def hae_varausnumero(varaus):
+def hae_varausnumero(varaus: list[str]) -> str:
     varausnumero = int(varaus[0])
-    print(f"Varausnumero: {varausnumero} ")
+    return varausnumero
 
-def hae_varaaja(varaus):
+def hae_varaaja(varaus: list[str]) -> str:
     nimi = varaus[1]
-    print(f"Varaaja: {nimi}")
+    return nimi
 
-def hae_paiva(varaus):
+def hae_paiva(varaus: list[str]) -> datetime:
     paivamaara = datetime.strptime(varaus[2], "%Y-%m-%d").date()
     suomalainenpvm = paivamaara.strftime("%d.%m.%Y")
-    print(f"Päivämäärä: {suomalainenpvm}")
+    return suomalainenpvm
 
-def hae_aloitusaika(varaus):
+def hae_aloitusaika(varaus: list[str]) -> datetime:
     aloitusaika = datetime.strptime(varaus[3], "%H:%M").time()
     suomalainenaika = aloitusaika.strftime("%H.%M")
-    print(f"Aloitusaika: {suomalainenaika}")
+    return suomalainenaika
 
-def hae_tuntimaara(varaus):
+def hae_tuntimaara(varaus: list[str]) -> str:
     tuntimaara = int(varaus[4])
-    print(f"Tuntimäärä: {tuntimaara} ")
+    return tuntimaara
 
-def hae_tuntihinta(varaus):
+def hae_tuntihinta(varaus: list[str]) -> float:
     tuntihinta = float(varaus[5])
     tuntihinta_str = f"{tuntihinta:.2f}".replace(".", ",")
-    print(f"Tuntihinta: {tuntihinta_str} €")
+    return tuntihinta_str
 
-def laske_kokonaishinta(varaus):
+def laske_kokonaishinta(varaus: list[str]) -> float:
     kokonaishinta = int(varaus[4]) * float(varaus[5])
     kokonaishinta_str = f"{kokonaishinta:.2f}".replace(".", ",")
-    print(f"Kokonaishinta {kokonaishinta_str} €")
+    return kokonaishinta_str
     
-def hae_maksettu(varaus):
+def hae_maksettu(varaus: list[str]) -> str:
     maksettu = varaus[6]
-    print(f"Maksettu {"Kyllä" if maksettu else "Ei"}")
+    return maksettu
 
-def hae_kohde(varaus):
+def hae_kohde(varaus: list[str]) -> str:
     kohde = varaus[7]
-    print(f"Kohde: {kohde} ")
+    return kohde
 
-def hae_puhelin(varaus):
+def hae_puhelin(varaus: list[str]) -> str:
     puhelin = varaus[8]
-    print(f"Puhelin: {puhelin} ")
+    return puhelin
 
-def hae_sahkoposti(varaus):
+def hae_sahkoposti(varaus: list[str]) -> str:
     sahkoposti = varaus[9]
-    print(f"Sähköposti: {sahkoposti}")
+    return sahkoposti
 
+def tulosta_varaus(varaus):
+    print(f"Varausnumero: {hae_varausnumero(varaus)}")
+    print(f"Varaaja: {hae_varaaja(varaus)}")
+    print(f"Päivämäärä: {hae_paiva(varaus)}")
+    print(f"Aloitusaika: {hae_aloitusaika(varaus)}")
+    print(f"Tuntimäärä: {hae_tuntimaara(varaus)} ")
+    print(f"Tuntihinta: {hae_tuntihinta(varaus)} €")
+    print(f"Kokonaishinta {laske_kokonaishinta(varaus)} €")
+    print(f"Maksettu {"Kyllä" if hae_maksettu(varaus) else "Ei"}")
+    print(f"Kohde: {hae_kohde(varaus)}")
+    print(f"Puhelin: {hae_puhelin(varaus)}")
+    print(f"Sähköposti: {hae_sahkoposti(varaus)}")
 
 
 def main():
     # Maaritellaan tiedoston nimi suoraan koodissa
     varaukset = "varaukset.txt"
 
-    # Avataan tiedosto, luetaan ja splitataan sisalto
+    # Avataan tiedosto ja luetaan rivit listaksi
     with open(varaukset, "r", encoding="utf-8") as f:
-        varaus = f.read().strip()
-        varaus = varaus.split('|')
+        rivit = f.readlines()
+
+    
+# Käydään läpi jokainen varaus
+    for rivi in rivit:
+        varaus = rivi.strip().split('|')
+        tulosta_varaus(varaus)
+        print("-" * 40)
 
     # Toteuta loput funktio hae_varaaja(varaus) mukaisesti
     # Luotavat funktiota tekevat tietotyyppien muunnoksen
     # ja tulostavat esimerkkitulosteen mukaisesti
-    print(varaus)
-    hae_varausnumero(varaus)
-    hae_varaaja(varaus)
-    hae_paiva(varaus)
-    hae_aloitusaika(varaus)
-    hae_tuntimaara(varaus)
-    hae_tuntihinta(varaus)
-    laske_kokonaishinta(varaus)
-    hae_maksettu(varaus)
-    hae_kohde(varaus)
-    hae_puhelin(varaus)
-    hae_sahkoposti(varaus)
+
 
 if __name__ == "__main__":
     main()
