@@ -95,9 +95,6 @@ def main():
         tulosta_varaus(varaus)
         print("-" * 40)
 
-    # Toteuta loput funktio hae_varaaja(varaus) mukaisesti
-    # Luotavat funktiota tekevat tietotyyppien muunnoksen
-    # ja tulostavat esimerkkitulosteen mukaisesti
 
 
 if __name__ == "__main__":
