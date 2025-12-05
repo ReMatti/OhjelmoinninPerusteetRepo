@@ -52,11 +52,11 @@ def hae_varaukset(varaustiedosto: str) -> list:
 
 
 def vahvistetut_varaukset(varaukset: list):
-    for varaus in varaukset[1:]:  # ohita otsikko
+    for varaus in varaukset[1:]: 
         nimi = varaus[1]
         tila = varaus[9]
-        pvm = varaus[4].strftime("%d.%m.%Y")   # suomalainen muoto
-        aika = varaus[5].strftime("%H.%M")     # 10.00 muoto
+        pvm = varaus[4].strftime("%d.%m.%Y")   
+        aika = varaus[5].strftime("%H.%M")     
         if(varaus[8]):
             print(f"- {nimi}, {tila}, {pvm} klo {aika}")
 
