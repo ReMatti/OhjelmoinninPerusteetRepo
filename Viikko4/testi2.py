@@ -23,6 +23,7 @@ from datetime import datetime
 
 def muunna_varaustiedot(varaus: list) -> list:
     #print(varaus)
+    
     muutettu_varaus = [] 
     muutettu_varaus.append(int(varaus[0]))
     muutettu_varaus.append(varaus[1])
@@ -39,8 +40,7 @@ def muunna_varaustiedot(varaus: list) -> list:
 
 
 def hae_varaukset(varaustiedosto: str) -> list:
-    # HUOM! Tälle funktioille ei tarvitse tehdä mitään!
-    # Jos muutat, kommentoi miksi muutit
+ 
     varaukset = []
     varaukset.append(["varausId", "nimi", "sähköposti", "puhelin", "varauksenPvm", "varauksenKlo", "varauksenKesto", "hinta", "varausVahvistettu", "varattuTila", "varausLuotu"])
     with open(varaustiedosto, "r", encoding="utf-8") as f:
@@ -50,68 +50,64 @@ def hae_varaukset(varaustiedosto: str) -> list:
             varaukset.append(muunna_varaustiedot(varaustiedot))
     return varaukset
 
+
 def vahvistetut_varaukset(varaukset: list):
-    for varaus in varaukset[1:]:
-    #print("- Nimi, Varattu tila, pv.kk.vvvv klo hh.mm")
+    for varaus in varaukset[1:]:  # ohita otsikko
+        nimi = varaus[1]
+        tila = varaus[9]
+        pvm = varaus[4].strftime("%d.%m.%Y")   # suomalainen muoto
+        aika = varaus[5].strftime("%H.%M")     # 10.00 muoto
         if(varaus[8]):
-            print(f"- {varaus[1]}, {varaus[9]}, {varaus[4].strftime('%d.%m.%Y')} klo {varaus[5].strftime('%H.%M')}")
+            print(f"- {nimi}, {tila}, {pvm} klo {aika}")
 
     print()
 
+
 def pitkät_varaukset(varaukset: list):
-    for varaus in varaukset[1:]:  
+    print("2) Pitkät varaukset (≥ 3 h)\n")
+    for varaus in varaukset[1:]:
         if varaus[6] >= 3:
+            pvm_str = varaus[4].strftime("%d.%m.%Y")
+            aika_str = varaus[5].strftime("%H.%M")
             print(f"- {varaus[1]}, {varaus[4].strftime('%d.%m.%Y')} klo {varaus[5].strftime('%H.%M')}, kesto {varaus[6]} h, {varaus[9]}")
 
     print()
 
-def varausten_vahvistusstatus(varaukset: list):
-    for varaus in varaukset[1:]: 
-        if(varaus[8]):
-            print(f"{varaus[1]} → Vahvistettu")
-        else:
-            print(f"{varaus[1]} → EI vahvistettu")
+
+def vahvistusstatus(varaukset: list):
+    print("3) Varausten vahvistusstatus\n")
+    for v in varaukset[1:]:
+        nuoli = " →"  # aina nimen jälkeen
+        status = "Vahvistettu" if v[8] else "EI vahvistettu"
+        print(f"- {v[1]}{nuoli} {status}")
+    print()
 
     print()
 
+def yhteenveto(varaukset: list):
+    vahvistettuja = sum(1 for v in varaukset[1:] if v[8])
+    ei_vahvistettuja = sum(1 for v in varaukset[1:] if not v[8])
+    kaikki = len(varaukset) - 1
+    print("4) Yhteenveto vahvistuksista")
+    print(f"- Vahvistettuja: {vahvistettuja} kpl")
+    print(f"- Ei vahvistettuja: {ei_vahvistettuja} kpl")
+    print(f"- Kaikkia varauksia: {kaikki} kpl\n")
 
-def varausten_yhteenveto(varaukset: list):
-    vahvistetutVaraukset = 0
-    eiVahvistetutVaraukset = 0
-    for varaus in varaukset[1:]: 
-        if(varaus[8]):
-            vahvistetutVaraukset += 1
-        else:
-            eiVahvistetutVaraukset += 1
 
-    print(f"- Vahvistettuja varauksia: {vahvistetutVaraukset} kpl")
-    print(f"- Ei-vahvistettuja varauksia: {eiVahvistetutVaraukset} kpl")
-    print()
-
-def varausten_kokonaistulot(varaukset: list):
-    varaustenTulot = 0
-    for varaus in varaukset[1:]: 
-        if(varaus[8]):
-            varaustenTulot += varaus[6]*varaus[7]
-        
-    print("Vahvistettujen varausten kokonaistulot:", f"{varaustenTulot:.2f}".replace(".", ","), "€")
-    print()
-
+def kokonaistulot(varaukset: list):
+    summa = sum(v[7] * v[6] for v in varaukset[1:] if v[8])
+    print("5) Vahvistettujen varausten kokonaistulot")
+    print(f"Yhteensä: {summa:.2f} €\n")
 
 
 def main():
     varaukset = hae_varaukset("varaukset.txt")
     print("1) Vahvistetut varaukset")
     vahvistetut_varaukset(varaukset)
-    print("2) Pitkät varaukset (> 3 h)")
     pitkät_varaukset(varaukset)
-    print("3) Varausten vahvistusstatus")
-    varausten_vahvistusstatus(varaukset)
-    print("4) Yhteenveto vahvistuksista")
-    varausten_yhteenveto(varaukset)
-    print("5) Vahvistettujen varausten kokonaistulot")
-    varausten_kokonaistulot(varaukset)
-
+    vahvistusstatus(varaukset)
+    yhteenveto(varaukset)
+    kokonaistulot(varaukset)
 
 if __name__ == "__main__":
     main()
