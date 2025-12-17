@@ -28,7 +28,7 @@ def viikonpaiva_suomeksi(paiva: date) -> str:
 
 def lue_ja_laske_data(tiedoston_nimi: str) -> Dict[date, Dict[str, float]]:
     
-# Lukee CSV-tiedoston ja tekee laskennat
+# Lukee CSV-tiedoston ja tekee laskennat päiväkohtaisiin kulutus- ja tuotantosummiin kWh-yksikössä
     
     daily_data: Dict[date, Dict[str, float]] = defaultdict(
         lambda: {
@@ -108,7 +108,7 @@ def muodosta_raportti(data: Dict[date, Dict[str, float]]) -> str:
 
 def main() -> None:
     
-#Lukee CVS-tiedostot ja tulostaa raportin sekä yhteenvedon.
+#Lukee CSV-tiedostot ja tulostaa raportin sekä yhteenvedon.
     
     tiedostot = [
         "viikko41.csv",
