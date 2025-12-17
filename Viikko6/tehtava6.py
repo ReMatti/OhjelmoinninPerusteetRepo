@@ -286,5 +286,8 @@ def main() -> None:
                 print("Virheellinen valinta, kokeile uudestaan\n")
                # Jos painaa väärin ei mene takaisin ensimäiseen valikkoon vaan antaa valita uudelleen
 
+            print("------------------------------------------------")
+            
+
 if __name__ == "__main__":
     main()
