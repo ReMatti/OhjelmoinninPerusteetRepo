@@ -1,0 +1,11 @@
+-----------------------------------------------------
+Raportti kuulta: Helmikuu 2025
+
+- Kokonaiskulutus: 1364,95 kWh
+- Kokonaistuotanto: 7,11 kWh
+- Nettokuorma: 1357,84 kWh
+- Keskilämpötila: -3,05 °C
+
+Suurin kulutuspäivä: 14.2.2025 (67,78 kWh, -7,30 °C)
+Pienin kulutuspäivä: 23.2.2025 (31,35 kWh, 0,40 °C)
+-----------------------------------------------------
